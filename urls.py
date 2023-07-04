@@ -1,17 +1,28 @@
-from django.urls import path
+"""base URL Configuration
 
-from .apiviews import CarList, CheckCars, EngineTypeList, BatteryTypeList, ServiceCriteriaList, CarDetail, CarTypeList, CarsNeedingServicing, UserCreate, UserLogin
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework_swagger.views import get_swagger_view
+from rest_framework.documentation import include_docs_urls
 
+schema_view = get_swagger_view(title="Car Rentals API Documentation")
 
 urlpatterns = [
-    path("users/create", UserCreate.as_view(), name="users_create"),
-    path("login", UserLogin.as_view(), name="login"),
-    path("cars", CarList.as_view(), name="cars"),
-    path("engines", EngineTypeList.as_view(), name="engines"),
-    path("battery", BatteryTypeList.as_view(), name="batteries"),
-    path("car_type", CarTypeList.as_view(), name="cartypes"),
-    path("need_servicing", CarsNeedingServicing.as_view(), name="need_servicing"),
-    path("service_criteria", ServiceCriteriaList.as_view(), name="service_criteria"),
-    path("check/cars", CheckCars.as_view(), name="check_cars"),
-    path("cars/<int:pk>/details", CarDetail.as_view(), name="car_details"),
+    path('admin/', admin.site.urls),
+    path("rentals/", include('rentals.urls')),
+    path("swagger-docs", schema_view),
+    path("docs", include_docs_urls(title="Rental API Doc.")),
 ]
